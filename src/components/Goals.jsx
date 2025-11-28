@@ -1,120 +1,134 @@
-// src/components/Goals.jsx (REWRITTEN)
+// src/components/Goals.jsx (REWRITTEN - Adds Icon Selection to Form)
 
 import React, { useState } from 'react';
-import { Home, Plane, GraduationCap, Plus, Pencil, Save, X } from 'lucide-react';
+import { Plus, Pencil, Save, X, Trash2, DollarSign } from 'lucide-react';
 
-// Mock Data (These should ultimately be replaced by props from FinanceDashboard)
-const goalData = [
-    { id: 1, name: 'House Down Payment', current: 15000, target: 50000, icon: Home, iconClass: 'icon-blue' },
-    { id: 2, name: 'Vacation Fund', current: 1500, target: 5000, icon: Plane, iconClass: 'icon-green' },
-];
-
-// NOTE: Ensure your FinanceDashboard passes 'goals', 'updateGoal', and 'deleteGoal' as props.
-export default function Goals({ goals = goalData, updateGoal, deleteGoal }) {
+export default function Goals({ goals, addGoal, updateGoal, deleteGoal, ICON_MAP }) {
     const [editingId, setEditingId] = useState(null);
     const [editForm, setEditForm] = useState({});
-    
-    // Function to set up the form when the Edit button is clicked
+    const [isAdding, setIsAdding] = useState(false);
+    const [newGoalForm, setNewGoalForm] = useState({ 
+        name: '', 
+        target: '', 
+        current: '',
+        icon: 'DollarSign' // Set default icon for new form
+    });
+
+    // Extract list of icon names for the dropdown
+    const iconOptions = Object.keys(ICON_MAP);
+
+    const handleNewGoalChange = (e) => {
+        setNewGoalForm({ ...newGoalForm, [e.target.name]: e.target.value });
+    };
+
+    const handleNewGoalSubmit = () => {
+        if (newGoalForm.name && newGoalForm.target && addGoal) {
+            addGoal(newGoalForm);
+            setNewGoalForm({ name: '', target: '', current: '', icon: 'DollarSign' });
+            setIsAdding(false);
+        }
+    };
+
     const handleEditClick = (goal) => {
+        setIsAdding(false);
         setEditingId(goal.id);
         setEditForm({ 
             name: goal.name, 
             target: goal.target.toString(), 
-            current: goal.current.toString() 
+            current: goal.current.toString(),
+            icon: goal.icon
         });
     };
 
-    // Function to save the changes
     const handleSaveEdit = (id) => {
         const updates = {
             name: editForm.name,
             target: parseFloat(editForm.target),
-            current: parseFloat(editForm.current)
+            current: parseFloat(editForm.current),
+            icon: editForm.icon // Pass the icon change to the parent
         };
-        // Call the update function passed down from the parent
-        if (updateGoal) {
-            updateGoal(id, updates); 
-        }
+        if (updateGoal) { updateGoal(id, updates); }
         setEditingId(null);
     };
 
-    // Handler for updating input fields
     const handleFormChange = (e) => {
         setEditForm({ ...editForm, [e.target.name]: e.target.value });
     };
-
-    const handleAddGoal = () => {
-        console.log('Open Add Goal Modal or Form');
+    
+    const getGoalVisuals = (goal) => {
+        const iconData = ICON_MAP[goal.icon] ? ICON_MAP[goal.icon] : ICON_MAP.DollarSign;
+        return { Icon: iconData.Icon, class: iconData.class }; 
     };
 
     return (
         <div className="tab-content-area">
             <div className="content-header-with-button">
                 <h2 className="tab-content-heading">Savings Goals</h2>
-                <button className="primary-action-button" onClick={handleAddGoal}>
+                <button 
+                    className="primary-action-button" 
+                    onClick={() => { setIsAdding(prev => !prev); setEditingId(null); }}
+                >
                     <Plus size={18} />
-                    <span>Add Goal</span>
+                    <span>{isAdding ? 'Cancel Add' : 'Add Goal'}</span>
                 </button>
             </div>
           
+            {/* Goal Creation Form (New Icon Select Added) */}
+            {isAdding && (
+                <div className="creation-form-panel goal-form">
+                    <input className="edit-input" type="text" name="name" placeholder="Goal Name" value={newGoalForm.name} onChange={handleNewGoalChange} />
+                    <input className="edit-input target-input" type="number" name="target" placeholder="Target ($)" value={newGoalForm.target} onChange={handleNewGoalChange} />
+                    <input className="edit-input target-input" type="number" name="current" placeholder="Current Saved ($)" value={newGoalForm.current} onChange={handleNewGoalChange} />
+                    
+                    {/* ICON SELECTION DROPDOWN */}
+                    <select className="edit-select" name="icon" value={newGoalForm.icon} onChange={handleNewGoalChange}>
+                        {iconOptions.map(iconName => (
+                            <option key={iconName} value={iconName}>
+                                {iconName}
+                            </option>
+                        ))}
+                    </select>
+                    
+                    <button className="primary-action-button" onClick={handleNewGoalSubmit}>
+                        <Save size={18} /> 
+                        <span>Save New Goal</span>
+                    </button>
+                </div>
+            )}
+
             <div className="transaction-list-container">
+                {goals.length === 0 && <p className="empty-state-text">No goals set. Add one!</p>}
                 {goals.map((goal) => {
                     const progress = (goal.current / goal.target) * 100;
                     const isEditing = goal.id === editingId;
-                    
-                    // Simple logic to choose an icon for mock data
-                    const { icon: Icon, class: iconClass } = goal.name.includes('House') ? { icon: Home, class: 'icon-blue' } : 
-                        goal.name.includes('Vacation') ? { icon: Plane, class: 'icon-green' } : 
-                        { icon: GraduationCap, class: 'icon-purple' };
+                    const { Icon, class: iconClass } = getGoalVisuals(goal);
 
                     return (
                         <div key={goal.id} className="budget-item transaction-item">
-                            
-                            {/* Icon & Progress Column */}
                             <div className="item-icon-wrapper">
                                 <Icon className={iconClass} size={24} />
                             </div>
                             
                             <div className="item-details">
-                                {isEditing ? (
-                                    <input
-                                        className="edit-input"
-                                        type="text"
-                                        name="name"
-                                        value={editForm.name}
-                                        onChange={handleFormChange}
-                                    />
-                                ) : (
-                                    <p className="item-name">{goal.name}</p>
-                                )}
+                                {/* Editing name */}
+                                {isEditing ? (<input className="edit-input" type="text" name="name" value={editForm.name} onChange={handleFormChange} />) : (<p className="item-name">{goal.name}</p>)}
                                 <div className="budget-progress-bar">
-                                    <div 
-                                        className="budget-progress-fill safe"
-                                        style={{ width: `${Math.min(progress, 100)}%` }}
-                                    ></div>
+                                    <div className="budget-progress-fill safe" style={{ width: `${Math.min(progress, 100)}%` }}></div>
                                 </div>
                             </div>
                             
-                            {/* Target/Current Display & Edit Fields */}
                             <div className="item-meta budget-meta goal-meta-group">
+                                {/* Editing amount fields */}
                                 {isEditing ? (
                                     <>
-                                        <input
-                                            className="edit-input target-input"
-                                            type="number"
-                                            name="current"
-                                            placeholder="Current $"
-                                            value={editForm.current}
-                                            onChange={handleFormChange}
-                                        />
-                                        <input
-                                            className="edit-input target-input"
-                                            type="number"
-                                            name="target"
-                                            placeholder="Target $"
-                                            value={editForm.target}
-                                            onChange={handleFormChange}
-                                        />
+                                        {/* Dropdown for icon editing */}
+                                        <select className="edit-select" name="icon" value={editForm.icon} onChange={handleFormChange}>
+                                            {iconOptions.map(iconName => (
+                                                <option key={iconName} value={iconName}>{iconName}</option>
+                                            ))}
+                                        </select>
+                                        <input className="edit-input target-input" type="number" name="current" value={editForm.current} onChange={handleFormChange} />
+                                        <input className="edit-input target-input" type="number" name="target" value={editForm.target} onChange={handleFormChange} />
                                     </>
                                 ) : (
                                     <>
@@ -124,7 +138,6 @@ export default function Goals({ goals = goalData, updateGoal, deleteGoal }) {
                                 )}
                             </div>
                             
-                            {/* Action Buttons */}
                             <div className="action-buttons-group">
                                 {isEditing ? (
                                     <>
@@ -134,7 +147,7 @@ export default function Goals({ goals = goalData, updateGoal, deleteGoal }) {
                                 ) : (
                                     <>
                                         <button className="edit-action-button" onClick={() => handleEditClick(goal)}><Pencil size={18} /></button>
-                                        <button className="edit-action-button delete" onClick={() => deleteGoal && deleteGoal(goal.id)}><X size={18} /></button>
+                                        <button className="edit-action-button delete" onClick={() => deleteGoal && deleteGoal(goal.id)}><Trash2 size={18} /></button>
                                     </>
                                 )}
                             </div>

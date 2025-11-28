@@ -99,7 +99,7 @@ body {
 }
 
 
-/* --- 4. Tabs Navigation Styles --- */
+/* --- 4. Tabs Navigation & Content Styles --- */
 .tabs-container {
     display: flex;
     gap: 16px; /* gap-4 */
@@ -148,10 +148,11 @@ body {
     font-size: 1.5rem; /* text-2xl */
     font-weight: 600; /* font-semibold */
     color: #93c5fd; 
-    margin: 0; /* Important: remove default margin if used with buttons */
+    margin: 0; 
 }
 
-/* --- 5. Action Buttons (Add/Edit) --- */
+
+/* --- 5. Action Buttons (Add/Edit/Delete) --- */
 
 .primary-action-button {
     display: flex;
@@ -173,23 +174,87 @@ body {
     background-color: #4338ca; /* darker indigo */
 }
 
+/* Edit/Save/Delete/Cancel Buttons inside list items */
 .edit-action-button {
-    background: none;
-    border: none;
-    color: #94a3b8; /* text-slate-400 */
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8; 
     cursor: pointer;
-    margin-left: 12px; 
     padding: 6px;
     border-radius: 6px;
-    transition: color 0.2s, background-color 0.2s;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
 .edit-action-button:hover {
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* --- 6. Overview Component Styles (Charts & Summary) --- */
+.edit-action-button.save {
+    color: #34d399; /* emerald-400 */
+}
+
+.edit-action-button.delete, .edit-action-button.cancel {
+    color: #f87171; /* red-400 */
+}
+
+
+/* --- 6. Form/Input/Select Styles (for Add and Edit) --- */
+
+.edit-input, .edit-select {
+    background-color: #1e293b; /* slate-800 */
+    border: 1px solid #475569; /* slate-600 */
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.edit-select {
+    margin-top: 4px;
+    padding: 7px 10px; 
+}
+
+.amount-input, .target-input {
+    text-align: right;
+    width: 80px; 
+    margin: 2px 0;
+}
+
+/* Container for the Add Forms */
+.creation-form-panel {
+    display: flex;
+    gap: 16px; 
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    border-radius: 0.75rem; 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    background-color: rgba(255, 255, 255, 0.05); 
+    flex-wrap: wrap; 
+    align-items: center;
+}
+
+.creation-form-panel .edit-input, 
+.creation-form-panel .edit-select {
+    flex: 1 1 150px; 
+    min-width: 100px;
+}
+
+.creation-form-panel .edit-input.amount-input {
+    max-width: 120px; 
+    flex: 0 0 120px;
+}
+
+.creation-form-panel .primary-action-button {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+
+/* --- 7. Overview Component Styles (Charts & Summary) --- */
 
 .overview-grid {
     display: grid;
@@ -248,7 +313,7 @@ body {
     color: #ef4444; /* text-red-500 */
 }
 
-/* --- 7. List Styles (Expenses/Budgets/Goals) --- */
+/* --- 8. List Styles (Expenses/Budgets/Goals) --- */
 
 .transaction-list-container {
     border-radius: 0.75rem; 
@@ -313,6 +378,13 @@ body {
     margin: 0;
 }
 
+/* Specific styles for Goals edit fields */
+.goal-meta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 /* Budget Progress Bar Styles */
 .budget-item .item-details {
     display: flex;
@@ -346,8 +418,15 @@ body {
     background-color: #ef4444; /* red-500 */
 }
 
+.empty-state-text {
+    text-align: center;
+    color: #94a3b8; 
+    padding: 32px;
+    font-size: 1.125rem;
+}
 
-/* --- 8. Icon Color Utility Classes (Used inside JSX) --- */
+
+/* --- 9. Icon Color Utility Classes (Used inside JSX) --- */
 .icon-blue { color: #60a5fa; }   
 .icon-red { color: #f87171; }    
 .icon-green { color: #4ade80; }  
