@@ -1,8 +1,7 @@
 {
-<<<<<<< HEAD
   "name": "finance-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0", 
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -27,25 +26,4 @@
     "globals": "^16.5.0",
     "vite": "^7.2.4"
   }
-=======
-  "name": "finance-tracker",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "recharts": "^2.5.0",
-    "lucide-react": "^0.275.0"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0",
-    "@vitejs/plugin-react": "^3.1.0"
-  },
-  "homepage": "https://DivinityGinger.github.io/finance-tracker"
->>>>>>> f30f4c66275a9977e554d09302544a2ca4ba046c
 }
