@@ -1,0 +1,357 @@
+/* src/styles.css */
+
+/* --- 1. Global and Base Styles --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #ffffff; /* text-white */
+}
+
+/* This class wraps the entire application for the background and minimum height */
+.main-app-wrapper { 
+    min-height: 100vh;
+    padding: 24px; /* p-6 */
+    /* Mimics the dark, gradient background */
+    background: linear-gradient(
+        to bottom right, 
+        #0f172a 0%,    /* slate-900 */
+        #1e3a8a 50%,   /* blue-900 */
+        #0f172a 100%   /* slate-900 */
+    );
+}
+
+.finance-dashboard-container {
+    max-width: 1280px; /* max-w-7xl */
+    margin-left: auto; /* mx-auto */
+    margin-right: auto; /* mx-auto */
+}
+
+/* --- 2. Header and Title Styles --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.settings-button {
+    background: none;
+    border: none;
+    color: #94a3b8; /* text-slate-400 */
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 8px;
+}
+
+.settings-button:hover {
+    color: #ffffff;
+}
+
+.dashboard-title {
+    font-size: 2.25rem; /* text-4xl */
+    font-weight: 700; /* font-bold */
+    margin-bottom: 8px; /* mb-2 */
+    color: #93c5fd; /* A light blue fallback */
+}
+
+.dashboard-subtitle {
+    color: #94a3b8; /* text-slate-400 */
+}
+
+/* --- 3. Stats Cards Styles --- */
+.stats-card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px; /* gap-6 */
+    margin-bottom: 32px; /* mb-8 */
+}
+
+@media (min-width: 768px) {
+    .stats-card-grid {
+        grid-template-columns: repeat(4, 1fr); /* md:grid-cols-4 */
+    }
+}
+
+.stat-card {
+    border-radius: 0.75rem; /* rounded-xl */
+    padding: 24px; /* p-6 */
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    -webkit-backdrop-filter: blur(12px); 
+    backdrop-filter: blur(12px); /* Frosted glass effect */
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-label {
+    color: #cbd5e1; /* text-slate-300 */
+}
+
+.card-value {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700; /* font-bold */
+}
+
+
+/* --- 4. Tabs Navigation Styles --- */
+.tabs-container {
+    display: flex;
+    gap: 16px; /* gap-4 */
+    margin-bottom: 24px; /* mb-6 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.tab-button {
+    padding-bottom: 12px; 
+    padding-left: 16px; 
+    padding-right: 16px; 
+    text-transform: capitalize;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+    color: #94a3b8; /* text-slate-400 */
+}
+
+.tab-button:hover {
+    color: #ffffff;
+}
+
+.tab-button.active {
+    border-bottom: 2px solid #60a5fa; /* border-b-2 border-blue-400 */
+    color: #ffffff; /* text-white */
+}
+
+.tab-content-wrapper {
+    padding-top: 24px;
+}
+
+.tab-content-area {
+    padding: 16px 0;
+    color: #e2e8f0; 
+}
+
+.content-header-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.tab-content-heading {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: 600; /* font-semibold */
+    color: #93c5fd; 
+    margin: 0; /* Important: remove default margin if used with buttons */
+}
+
+/* --- 5. Action Buttons (Add/Edit) --- */
+
+.primary-action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    padding: 10px 18px;
+    border: none;
+    border-radius: 9999px; /* rounded-full */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    
+    /* Mimics bg-indigo-600 and text-white */
+    background-color: #4f46e5; 
+    color: #ffffff;
+}
+
+.primary-action-button:hover {
+    background-color: #4338ca; /* darker indigo */
+}
+
+.edit-action-button {
+    background: none;
+    border: none;
+    color: #94a3b8; /* text-slate-400 */
+    cursor: pointer;
+    margin-left: 12px; 
+    padding: 6px;
+    border-radius: 6px;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.edit-action-button:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- 6. Overview Component Styles (Charts & Summary) --- */
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px; 
+}
+
+@media (min-width: 768px) {
+    .overview-grid {
+        grid-template-columns: 2fr 1fr; 
+    }
+}
+
+.chart-panel, .summary-panel {
+    border-radius: 0.75rem; 
+    padding: 24px; 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    background-color: rgba(255, 255, 255, 0.05); 
+    -webkit-backdrop-filter: blur(8px); 
+    backdrop-filter: blur(8px); 
+}
+
+.chart-title {
+    font-size: 1.25rem; 
+    font-weight: 600; 
+    color: #ffffff;
+    margin-bottom: 24px;
+}
+
+.summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.summary-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-label {
+    color: #cbd5e1;
+}
+
+.summary-value {
+    font-weight: 700;
+}
+
+.summary-value.green {
+    color: #10b981; /* text-emerald-500 */
+}
+
+.summary-value.red {
+    color: #ef4444; /* text-red-500 */
+}
+
+/* --- 7. List Styles (Expenses/Budgets/Goals) --- */
+
+.transaction-list-container {
+    border-radius: 0.75rem; 
+    overflow: hidden; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px; 
+    background-color: rgba(255, 255, 255, 0.05); 
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+.transaction-item + .transaction-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.item-icon-wrapper {
+    flex-shrink: 0;
+    margin-right: 16px; 
+    padding: 8px; 
+    border-radius: 50%; 
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-details {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.item-name {
+    font-weight: 600; 
+    margin: 0;
+    color: #ffffff;
+}
+
+.item-category {
+    font-size: 0.875rem; 
+    color: #94a3b8; 
+    margin: 0;
+}
+
+.item-meta {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.item-amount {
+    font-weight: 700;
+    margin: 0;
+}
+
+.item-date {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Budget Progress Bar Styles */
+.budget-item .item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.budget-progress-bar {
+    height: 6px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.budget-progress-fill {
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+}
+
+.budget-progress-fill.safe {
+    background-color: #4ade80; /* green-400 */
+}
+
+.budget-progress-fill.warning {
+    background-color: #facc15; /* yellow-400 */
+}
+
+.budget-progress-fill.danger {
+    background-color: #ef4444; /* red-500 */
+}
+
+
+/* --- 8. Icon Color Utility Classes (Used inside JSX) --- */
+.icon-blue { color: #60a5fa; }   
+.icon-red { color: #f87171; }    
+.icon-green { color: #4ade80; }  
+.icon-purple { color: #c084fc; } 
+.icon-orange { color: #fb923c; } 
+
+.item-amount.red { color: #f87171; }
